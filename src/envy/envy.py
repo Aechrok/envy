@@ -10,18 +10,13 @@ AZURE_CLIENT_SECRET=os.environ.get('AZURE_CLIENT_SECRET')
 AZURE_KEYVAULT_NAME=os.environ.get('AZURE_KEYVAULT_NAME')
 AZURE_SECRET_NAME=os.environ.get('AZURE_SECRET_NAME')
 
-logging.basicConfig()
-log = logging.getLogger("Envy")
-log.setLevel(logging.INFO)
-
-
 def command_run(cmd, mask):
     os.environ[str(mask)] = "XXXXXX_MASKED_XXXXXX"
     try:
-        log.info("Processing commands...")
         result = subprocess.run(cmd, shell=True)
     except Exception as e:
-        log.error("Failed execute command: {}: {}".format(cmd, result.stderr))
+        click.secho("Failed execute command: {}: {}".format(cmd, result.stderr), fg='red', err=True)
+        exit(2)
 
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -69,31 +64,31 @@ def main(name, tenantID, clientID, clientSecret, keyvaultName, mask, command):
         if credentials is None:
             try:
                 credentials = EnvironmentCredential()
-                log.info('Environmental credentials found.')
             except Exception as e:
-                log.warning("No environmental credentials clientId|clientSecret|tenantId found.")
+                click.secho("No environmental credentials clientId|clientSecret|tenantId found.", fg='red', err=True)
+                exit(2)
 
         # Create client object
         if credentials:
-            log.info("Processing credentials...")
             client = SecretClient(vault_url=vault_url, credential=credentials)
 
         # Load all variables from the Azure KV secret into the environment
         if client:
-            log.info("Credentials found, setting environment...")
             try:
                 creds = json.loads(client.get_secret(name).value)
                 for k,v in creds.items():
                     os.environ[str(k)] = str(v)
 
             except Exception as e:
-                log.error("Failed to evalute creds: {}".format(e))
+                click.secho("Failed to evalute creds: {}".format(e), fg='red', err=True)
+                exit(2)
 
         # If command follows, execute it
         if command:
             command_run(command, mask)
 
     else:
-        log.error("Missing a required environmental variable.")
+        click.secho("Missing a required environmental variable.", fg='red', err=True)
+        exit(2)
 if __name__ == '__main__':
     main()
