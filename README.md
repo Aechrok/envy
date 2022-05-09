@@ -27,6 +27,7 @@ Options:
   --azure-keyvault-name TEXT  The name of Azure KeyVault (in the public cloud) where the secret lives.
                               [env: AZURE_KEYVAULT_NAME]
   -m, --mask TEXT             Environment variable that should be masked.
+  -v, --verbose               Increase the verbosity of log messages.
   -c, --command TEXT          Command to run within the secrets environment.
   -h, --help                  Show this message and exit.
   ```
