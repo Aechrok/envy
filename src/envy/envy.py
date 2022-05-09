@@ -10,9 +10,12 @@ AZURE_CLIENT_SECRET=os.environ.get('AZURE_CLIENT_SECRET')
 AZURE_KEYVAULT_NAME=os.environ.get('AZURE_KEYVAULT_NAME')
 AZURE_SECRET_NAME=os.environ.get('AZURE_SECRET_NAME')
 
-def command_run(cmd, mask):
-    os.environ[str(mask)] = "XXXXXX_MASKED_XXXXXX"
+def command_run(cmd, verbose, mask):
+    for var in mask:
+        os.environ[str(var)] = "XXXXXX_MASKED_XXXXXX"
     try:
+        if verbose > 0:
+            click.secho("Processing commands...", fg='yellow')
         result = subprocess.run(cmd, shell=True)
     except Exception as e:
         click.secho("Failed execute command: {}: {}".format(cmd, result.stderr), fg='red', err=True)
@@ -26,9 +29,10 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.option('--azure-client-id', 'clientID', default=AZURE_CLIENT_ID, help='\b\nThe application id of the service principal used for authorization.\n[env: AZURE_CLIENT_ID]={}'.format(AZURE_CLIENT_ID))
 @click.option('--azure-client-secret', 'clientSecret', default=AZURE_CLIENT_SECRET, help='\b\nThe secret of the service principal used for authorization.\n[env: AZURE_CLIENT_SECRET]')
 @click.option('--azure-keyvault-name', 'keyvaultName', default=AZURE_KEYVAULT_NAME, help='\b\nThe name of Azure KeyVault (in the public cloud) where the secret lives.\n[env: AZURE_KEYVAULT_NAME]={}'.format(AZURE_KEYVAULT_NAME))
-@click.option('-m', '--mask', 'mask', help='Environment variable that should be masked.')
+@click.option('-m', '--mask', 'mask', multiple=True, help='Environment variable that should be masked.')
+@click.option('-v', '--verbose', 'verbose', count=True, help='Increase the verbosity of log messages.')
 @click.option('-c', '--command', 'command', help='Command to run within the secrets environment.')
-def main(name, tenantID, clientID, clientSecret, keyvaultName, mask, command):
+def main(name, tenantID, clientID, clientSecret, keyvaultName, mask, verbose, command):
     """
     ENVy\n
     Simple cli tool to run arbitrary code using environmental variables retrieved as a json object from Azure keyvault.
@@ -64,17 +68,23 @@ def main(name, tenantID, clientID, clientSecret, keyvaultName, mask, command):
         if credentials is None:
             try:
                 credentials = EnvironmentCredential()
+                if verbose > 0:
+                    click.secho("Environmental variables found...", fg='yellow')
             except Exception as e:
                 click.secho("No environmental credentials clientId|clientSecret|tenantId found.", fg='red', err=True)
                 exit(2)
 
         # Create client object
         if credentials:
+            if verbose > 0:
+                click.secho("Processing credentials...", fg='yellow')
             client = SecretClient(vault_url=vault_url, credential=credentials)
 
         # Load all variables from the Azure KV secret into the environment
         if client:
             try:
+                if verbose > 0:
+                    click.secho("Credentials found, setting environment...", fg='yellow')
                 creds = json.loads(client.get_secret(name).value)
                 for k,v in creds.items():
                     os.environ[str(k)] = str(v)
@@ -85,7 +95,7 @@ def main(name, tenantID, clientID, clientSecret, keyvaultName, mask, command):
 
         # If command follows, execute it
         if command:
-            command_run(command, mask)
+            command_run(command, verbose, mask)
 
     else:
         click.secho("Missing a required environmental variable.", fg='red', err=True)
