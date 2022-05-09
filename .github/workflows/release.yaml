@@ -1,6 +1,6 @@
 name: "Release"
 
-on: [merge]
+on: [release]
 
 jobs:
   release:
@@ -23,10 +23,11 @@ jobs:
         with:
           name: release_url
           path: release_url.txt
+          
   publish:
     name: Upload binaries
     if: contains(github.ref, 'tags/v')
-    needs: [check, fmt, clippy, test, release]
+    needs: [release]
     runs-on: ubuntu-latest
     strategy:
       matrix:
