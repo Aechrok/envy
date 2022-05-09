@@ -1,0 +1,57 @@
+name: "Release"
+
+on: [merge]
+
+jobs:
+  release:
+      name: Create Github Release
+      if: contains(github.ref, 'tags/v')
+      runs-on: ubuntu-latest
+      steps:
+      - name: Check out aports
+        uses: actions/checkout@master
+      - name: Try building the new release version
+        id: create_release
+        uses: acj/action-abuild@v1
+        with:
+          PACKAGE_PATH: "src/envy"
+          RELEASE_VERSION: "0.1.0"
+      - name: Output Release URL File
+        run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
+      - name: Save Release URL File for publish
+        uses: actions/upload-artifact@v1
+        with:
+          name: release_url
+          path: release_url.txt
+  publish:
+    name: Upload binaries
+    if: contains(github.ref, 'tags/v')
+    needs: [check, fmt, clippy, test, release]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+        - x86_64-linux-musl
+    steps:
+    - name: Load Release URL File from release job
+      uses: actions/download-artifact@v1
+      with:
+        name: release_url
+    - name: Get Release File Name & Upload URL
+      id: get_release_info
+      run: |
+        value=`cat release_url/release_url.txt`
+        echo ::set-output name=upload_url::$value
+      env:
+        TAG_REF_NAME: ${{ github.ref }}
+        REPOSITORY_NAME: ${{ github.repository }}
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+        asset_path: ./target/${{ matrix.target }}/release/envy
+        asset_name: envy-${{ matrix.target }}
+        asset_content_type: application/octet-stream
