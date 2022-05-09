@@ -58,10 +58,21 @@ envy -n $BASE_REPO_NAME -c 'terraform init'
 This allows for multi-tenant use with Azure without exposing the credentials for the Service Principals with access.
 
 ## Features
-#### Masking
-Masking is supported to hide a variable from the child command. Adding a `-m` or `--mask` switch with the matching variable name will achieve this.
+#### Verbosity
+Typically, there are no messages for successful actions. In the event that you require more information, specifically to figure out where a failure may be occurring, adding a `-v` or `--verbose` switch will display messages at each stage.
 
 ```shell
-#> envy -n ... --mask VARIABLE -c 'echo $VARIABLE'
+#> envy ... --verbose -c '...'
+Environmental variables found...
+Processing credentials...
+Credentials found, setting environment...
+Processing commands...
+```
+
+#### Masking
+Masking is supported to hide a variable from the child command. Adding a `-m` or `--mask` switch with the matching variable name will achieve this. Multiple masking variables are permitted.
+
+```shell
+#> envy ... --mask VARIABLE -c 'echo $VARIABLE'
 XXXXXX_MASKED_XXXXXX
 ```
