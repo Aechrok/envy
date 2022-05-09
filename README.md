@@ -62,5 +62,6 @@ This allows for multi-tenant use with Azure without exposing the credentials for
 Masking is supported to hide a variable from the child command. Adding a `-m` or `--mask` switch with the matching variable name will achieve this.
 
 ```shell
-envy -n ... --mask VARIABLE -c 'child process'
+#> envy -n ... --mask VARIABLE -c 'echo $VARIABLE'
+XXXXXX_MASKED_XXXXXX
 ```
