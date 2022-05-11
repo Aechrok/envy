@@ -76,12 +76,16 @@ Environments are stored as a single JSON object within a keyvault secret. ENVy w
 }
 ```
 
+-----
+
 ### AWS
 #### IAM Users
 You must have an IAM user with permissions on AWS Secrets Manager.
 
 #### Secrets Manager
 Your secret should be created here. You can either use the key/value pair or drop json into the plaintext for the same effect. More information can be found here: [https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html](https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html) and [https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html)
+
+Environments are stored as a single JSON object within a Google Secrets Manager secret. ENVy will grab the first version of the key unless otherwise specified using the flag `--google-version-id`.
 
 ```json
 {
@@ -90,6 +94,8 @@ Your secret should be created here. You can either use the key/value pair or dro
     "SECRET_THREE":"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
 }
 ```
+
+-----
 
 ### Google
 #### Service Accounts
@@ -103,6 +109,8 @@ A google JSON file is required and must be located in the same folder or a child
 #### Cloud Secrets Manager
 Google Secrets are versioned so you will need to know the version of the key that you are looking for. ENVy will default to version 1 if none is provided.
 
+Environments are stored as a single JSON object within a AWS Secrets Manager secret.
+
 ```json
 {
     "SECRET_ONE":"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
@@ -110,6 +118,8 @@ Google Secrets are versioned so you will need to know the version of the key tha
     "SECRET_THREE":"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
 }
 ```
+
+-----
 
 ## CI/CD
 However you choose to do it, all options for a particular service are required to run ENVy. These are prefixed with the service name: (i.e. `--aws`, `--aws-access-key-id`, `--aws-secret-access-key`, and `--aws-region`). These can be injected as a Kubernetes secret, or otherwise pushed into the environment that is running ENVy using options found in the help `./envy -h`.
@@ -121,6 +131,8 @@ envy -n $BASE_REPO_NAME -c 'terraform init'
 ```
 
 This allows for multi-tenant use without exposing the credentials for the primary accounts with access.
+
+-----
 
 ## Features
 #### Verbosity
