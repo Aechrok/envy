@@ -64,6 +64,7 @@ def main(name, azure, aws, google, awsAccessKeyID, awsSecretAccessKey, awsRegion
         if verbose > 0:
             click.secho("Azure selected.", fg='green')
 
+        # Pre-flight checks
         if tenantID is None:
             click.secho("Missing: Azure Tenant ID", fg='red', err=True)
             exit(2)
@@ -132,6 +133,7 @@ def main(name, azure, aws, google, awsAccessKeyID, awsSecretAccessKey, awsRegion
         if verbose > 0:
             click.secho("AWS selected.", fg='green')
 
+        # Pre-flight checks
         if awsAccessKeyID is None:
             click.secho("Missing: AWS Access Key ID", fg='red', err=True)
             exit(2)
@@ -199,14 +201,13 @@ def main(name, azure, aws, google, awsAccessKeyID, awsSecretAccessKey, awsRegion
         if verbose > 0:
             click.secho("Google selected.", fg='green')
 
+        # Pre-flight checks
         if googleApplicationCredentials is None:
             click.secho("Missing: Google Application Credentials.", fg='red', err=True)
             exit(2)
-
         if googleProjectID is None:
             click.secho("Missing: Google Project ID.", fg='red', err=True)
             exit(2)
-
         if googleVersionID is None:
             if verbose > 0:
                 click.secho("Warning: Google Version ID missing. Setting to 1.", fg='yellow')
