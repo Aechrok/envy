@@ -51,12 +51,12 @@ Options:
   ```
 
 ## Capabilities
-[X] Azure Key Vault
-[X] Google Cloud Secrets Manager
-[X] AWS Secrets Manager
-[X] Variable masking
-[ ] Integration tests
-[X] JSON-based keys
+- [X] Azure Key Vault
+- [X] Google Cloud Secrets Manager
+- [X] AWS Secrets Manager
+- [X] Variable masking
+- [ ] Integration tests
+- [X] JSON-based keys
 
 ## Environment Setup
 ### Azure
