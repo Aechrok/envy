@@ -1,7 +1,7 @@
 ENVy
 =====
 
-Simple cli tool to run arbitrary code using environmental variables retrieved as a json object from Azure keyvault.
+Simple cli tool to run arbitrary code using environmental variables retrieved as a json object from Azure keyvault, Google Secrets Manager, or AWS Secrets Manager.
 
 Concept based on Jakub Fijałkowski's [KVENV](https://github.com/jakubfijalkowski/kvenv).
 
