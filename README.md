@@ -85,7 +85,7 @@ You must have an IAM user with permissions on AWS Secrets Manager.
 #### Secrets Manager
 Your secret should be created here. You can either use the key/value pair or drop json into the plaintext for the same effect. More information can be found here: [https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html](https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html) and [https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html)
 
-Environments are stored as a single JSON object within a Google Secrets Manager secret. ENVy will grab the first version of the key unless otherwise specified using the flag `--google-version-id`.
+Environments are stored as a single JSON object within a AWS Secrets Manager secret.
 
 ```json
 {
@@ -109,7 +109,7 @@ A google JSON file is required and must be located in the same folder or a child
 #### Cloud Secrets Manager
 Google Secrets are versioned so you will need to know the version of the key that you are looking for. ENVy will default to version 1 if none is provided.
 
-Environments are stored as a single JSON object within a AWS Secrets Manager secret.
+Environments are stored as a single JSON object within a Google Secrets Manager secret. ENVy will grab the first version of the key unless otherwise specified using the flag `--google-version-id`.
 
 ```json
 {
