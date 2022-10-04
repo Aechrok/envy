@@ -1,5 +1,6 @@
 ENVy
 =====
+![Lines of code](https://img.shields.io/tokei/lines/github.com/Aechrok/envy)
 
 Simple cli tool to run arbitrary code using environmental variables retrieved as a json object from Azure keyvault, Google Secrets Manager, or AWS Secrets Manager.
 
