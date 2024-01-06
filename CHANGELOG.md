@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.1 (2023-01-05)
+## 1.0.2 (2023-01-05)
 - Updated print statements to use f-strings.
 - Added Doppler service.
 - Separated out services to separate modules.
