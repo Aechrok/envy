@@ -19,7 +19,7 @@ jobs:
 
       - name: Try building the new release version
         id: create_release
-        uses: ivanvc/abuild-releaser-action@v1.0.0
+        uses: ivanvc/abuild-releaser-action@v1.1.0
         with:
           author: Lee Martin <lee@leemartin.us>
           rsa_public_key: ${{ secrets.RSA_PUBLIC_KEY }}
