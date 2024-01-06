@@ -24,7 +24,7 @@ jobs:
           author: Lee Martin <lee@leemartin.us>
           rsa_public_key: ${{ secrets.RSA_PUBLIC_KEY }}
           rsa_private_key: ${{ secrets.RSA_PRIVATE_KEY }}
-          package_dirs: "src/envy/*"
+          packages_dir: "src/envy/*"
 
       - name: Output Release URL File
         run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
