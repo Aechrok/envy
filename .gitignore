@@ -1,4 +1,8 @@
 dist/
 venv/
+bin/
+lib/
 *.egg-info
+pyvenv.cfg
 google_key.json
+__pycache__

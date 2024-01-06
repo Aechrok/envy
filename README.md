@@ -2,7 +2,7 @@ ENVy
 =====
 ![Lines of code](https://img.shields.io/tokei/lines/github.com/Aechrok/envy)
 
-Simple cli tool to run arbitrary code using environmental variables retrieved as a json object from Azure keyvault, Google Secrets Manager, or AWS Secrets Manager.
+Simple cli tool to run arbitrary code using environmental variables retrieved as a json object from Azure keyvault, Google Secrets Manager, Doppler Secrets Manager, or AWS Secrets Manager.
 
 Concept based on Jakub Fijałkowski's [KVENV](https://github.com/jakubfijalkowski/kvenv).
 
@@ -18,7 +18,7 @@ Usage: envy --secret-name <name> <options>
 
 Options:
   -n, --secret-name <string>                      Name of the secret to be queried.
-                                                  [env: SECRET_NAME]=None  [required]
+                                                  [env: SECRET_NAME]  [required]
   -m, --mask <string>                             Environment variable that should be masked.
   -v, --verbose                                   Increase the verbosity of log messages.
   -c, --command <string>                          Command to run within the secrets environment.
@@ -48,13 +48,24 @@ Options:
                                                   [env: GOOGLE_PROJECT_ID]
   --google-version-id <string>                    Cloud KMS secret version (e.g. "1").
                                                   [env: GOOGLE_VERSION_ID]
+
+  --doppler                                       Use Doppler Secret Manager Service.
+  --doppler-project <string>                      Doppler project where the secret lives.
+                                                  [env: DOPPLER_PROJECT]
+  --doppler-config <string>                       Doppler config for the specific environment.
+                                                  [env: DOPPLER_CONFIG]
+  --doppler-token <string>                        Doppler service token.
+                                                  [env: DOPPLER_TOKEN]
+                                                  
   -h, --help                                      Show this message and exit.
+  
   ```
 
 ## Capabilities
 - [X] Azure Key Vault
 - [X] Google Cloud Secrets Manager
 - [X] AWS Secrets Manager
+- [X] Doppler Secrets Manager
 - [X] Variable masking
 - [ ] Integration tests
 - [X] JSON-based keys
@@ -111,6 +122,23 @@ A google JSON file is required and must be located in the same folder or a child
 Google Secrets are versioned so you will need to know the version of the key that you are looking for. ENVy will default to version 1 if none is provided.
 
 Environments are stored as a single JSON object within a Google Secrets Manager secret. ENVy will grab the first version of the key unless otherwise specified using the flag `--google-version-id`.
+
+```json
+{
+    "SECRET_ONE":"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+    "SECRET_TWO":"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+    "SECRET_THREE":"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+}
+```
+-----
+
+### Doppler
+#### Project setup
+Ensure that a project has been set up and secrets are stored in whichever config you choose. (Prod, Dev, etc). You will need to create a service token on theproject at `access > Service Tokens > Generate`. This is the --doppler-token.
+More information can be found here: [https://docs.doppler.com/docs/service-tokens](https://docs.doppler.com/docs/service-tokens)
+
+#### Secrets Manager
+Environmental secrets used with this tool should be stored as a single JSON object within a doppler project's config.
 
 ```json
 {

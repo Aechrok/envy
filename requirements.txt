@@ -4,3 +4,4 @@ azure-keyvault==4.2.0
 azure-keyvault-secrets==4.4.0
 boto3==1.22.11
 google-cloud-secret-manager==2.10.0
+doppler-sdk==1.2.1
