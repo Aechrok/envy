@@ -19,7 +19,7 @@ jobs:
 
       - name: Try building the new release version
         id: create_release
-        uses: acj/action-abuild@v1
+        uses: acj/action-abuild@v1.1
         with:
           PACKAGE_PATH: "src/envy"
           RELEASE_VERSION: ${{ steps.tag.outputs.tag }}
