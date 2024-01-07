@@ -17,6 +17,9 @@ jobs:
         id: tag
         uses: dawidd6/action-get-tag@v1
 
+      - name: ownership workaround
+        run: git config --system --add safe.directory '/github/workspace'
+
       - name: Try building the new release version
         id: create_release
         uses: acj/action-abuild@v1.1
