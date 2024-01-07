@@ -19,12 +19,10 @@ jobs:
 
       - name: Try building the new release version
         id: create_release
-        uses: ivanvc/abuild-releaser-action@v1.1.0
+        uses: acj/action-abuild@v1
         with:
-          author: Lee Martin <lee@leemartin.us>
-          rsa_public_key: ${{ secrets.RSA_PUBLIC_KEY }}
-          rsa_private_key: ${{ secrets.RSA_PRIVATE_KEY }}
-          packages_dir: "src/envy/*"
+          PACKAGE_PATH: "src/envy"
+          RELEASE_VERSION: ${{ steps.tag.outputs.tag }}
 
       - name: Output Release URL File
         run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
