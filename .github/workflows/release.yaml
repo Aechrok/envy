@@ -11,7 +11,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
       - name: Check out aports
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: Get tag
         id: tag
@@ -22,7 +22,7 @@ jobs:
 
       - name: Try building the new release version
         id: create_release
-        uses: acj/action-abuild@v1.1
+        uses: carrot93/action-abuild@v1.1
         with:
           PACKAGE_PATH: "src/envy"
           RELEASE_VERSION: ${{ steps.tag.outputs.tag }}
@@ -31,7 +31,7 @@ jobs:
         run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
 
       - name: Save Release URL File for publish
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: release_url
           path: release_url.txt
@@ -47,7 +47,7 @@ jobs:
         - x86_64-linux-musl
     steps:
     - name: Load Release URL File from release job
-      uses: actions/download-artifact@v1
+      uses: actions/download-artifact@v4
       with:
         name: release_url
 
