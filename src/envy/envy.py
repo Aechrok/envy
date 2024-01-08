@@ -1,7 +1,7 @@
 import os, json, logging, subprocess, base64
 import click
 
-from .services import AzureService
+from envy.services import AzureService
 from services.AwsService import AWS
 from services.GoogleService import Google
 from services.DopplerService import Doppler
