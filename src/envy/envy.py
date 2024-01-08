@@ -1,6 +1,7 @@
 import os, json, logging, subprocess, base64
 import click
 
+import services as services
 from services.AzureService import Azure
 from services.AwsService import AWS
 from services.GoogleService import Google
