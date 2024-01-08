@@ -75,28 +75,24 @@ def main(name, azure, aws, google, doppler, # Service flags
 
 # Azure
     if azure:
-        svc = Azure()
-        res = svc.envy(verbose, command, name, mask, tenantID, clientID, clientSecret, keyvaultName)
+        res = AzureService.envy(verbose, command, name, mask, tenantID, clientID, clientSecret, keyvaultName)
         if res.get('command', None):
             command_run(res['command'], res['verbose'], res['mask'])
 
 # AWS
     elif aws:
-        svc = AWS()
-        res = svc.envy(verbose, command, name, mask, awsAccessKeyID, awsSecretAccessKey, awsRegion)
+        res = AwsService.envy(verbose, command, name, mask, awsAccessKeyID, awsSecretAccessKey, awsRegion)
         if res.get('command', None):
             command_run(res['command'], res['verbose'], res['mask'])
 
 # Google
     elif google:
-        svc = Google()
-        res = svc.envy(verbose, command, name, mask, googleApplicationCredentials, googleProjectID, googleVersionID)
+        res = GoogleService.envy(verbose, command, name, mask, googleApplicationCredentials, googleProjectID, googleVersionID)
         if res.get('command', None):
             command_run(res['command'], res['verbose'], res['mask'])
 
     elif doppler:
-        svc = Doppler()
-        res = svc.envy(verbose, command, name, mask, dopplerProject, dopplerConfig, dopplerToken)
+        res = DopplerService.envy(verbose, command, name, mask, dopplerProject, dopplerConfig, dopplerToken)
         if res.get('command', None):
             command_run(res['command'], res['verbose'], res['mask'])
 
