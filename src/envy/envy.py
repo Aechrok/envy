@@ -1,7 +1,7 @@
 import os, json, logging, subprocess, base64
 import click
 
-from .services import AzureService, AwsService, GoogleService, DopplerService
+from envy.services import AzureService, AwsService, GoogleService, DopplerService
 
 SECRET_NAME=os.environ.get('SECRET_NAME')
 AZURE_TENANT_ID=os.environ.get('AZURE_TENANT_ID')
