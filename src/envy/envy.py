@@ -1,10 +1,10 @@
 import os, json, logging, subprocess, base64
 import click
 
-from .services.AzureService import Azure
-from .services.AwsService import AWS
-from .services.GoogleService import Google
-from .services.DopplerService import Doppler
+from services.AzureService import Azure
+from services.AwsService import AWS
+from services.GoogleService import Google
+from services.DopplerService import Doppler
 
 SECRET_NAME=os.environ.get('SECRET_NAME')
 AZURE_TENANT_ID=os.environ.get('AZURE_TENANT_ID')
