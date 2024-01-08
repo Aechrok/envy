@@ -1,8 +1,7 @@
 import os, json, logging, subprocess, base64
 import click
 
-import services as services
-from services.AzureService import Azure
+from services import AzureService
 from services.AwsService import AWS
 from services.GoogleService import Google
 from services.DopplerService import Doppler
@@ -76,7 +75,7 @@ def main(name, azure, aws, google, doppler, # Service flags
 
 # Azure
     if azure:
-        svc = Azure()
+        svc = AzureService.Azure()
         res = svc.envy(verbose, command, name, mask, tenantID, clientID, clientSecret, keyvaultName)
         if res.get('command', None):
             command_run(res['command'], res['verbose'], res['mask'])
