@@ -1,6 +1,11 @@
 import os, json, logging, subprocess, base64
 import click
 
+from .services.AzureService import Azure
+from .services.AwsService import AWS
+from .services.GoogleService import Google
+from .services.DopplerService import Doppler
+
 SECRET_NAME=os.environ.get('SECRET_NAME')
 AZURE_TENANT_ID=os.environ.get('AZURE_TENANT_ID')
 AZURE_CLIENT_ID=os.environ.get('AZURE_CLIENT_ID')
@@ -70,7 +75,6 @@ def main(name, azure, aws, google, doppler, # Service flags
 
 # Azure
     if azure:
-        from envy.services.AzureService import Azure
         svc = Azure()
         res = svc.envy(verbose, command, name, mask, tenantID, clientID, clientSecret, keyvaultName)
         if res.get('command', None):
@@ -78,7 +82,6 @@ def main(name, azure, aws, google, doppler, # Service flags
 
 # AWS
     elif aws:
-        from envy.services.AwsService import AWS
         svc = AWS()
         res = svc.envy(verbose, command, name, mask, awsAccessKeyID, awsSecretAccessKey, awsRegion)
         if res.get('command', None):
@@ -86,14 +89,12 @@ def main(name, azure, aws, google, doppler, # Service flags
 
 # Google
     elif google:
-        from envy.services.GoogleService import Google
         svc = Google()
         res = svc.envy(verbose, command, name, mask, googleApplicationCredentials, googleProjectID, googleVersionID)
         if res.get('command', None):
             command_run(res['command'], res['verbose'], res['mask'])
 
     elif doppler:
-        from envy.services.DopplerService import Doppler
         svc = Doppler()
         res = svc.envy(verbose, command, name, mask, dopplerProject, dopplerConfig, dopplerToken)
         if res.get('command', None):
