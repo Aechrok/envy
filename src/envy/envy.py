@@ -1,11 +1,6 @@
 import os, json, logging, subprocess, base64
 import click
 
-from services.azure import Azure
-from services.aws import AWS
-from services.google import Google
-from services.doppler import Doppler
-
 SECRET_NAME=os.environ.get('SECRET_NAME')
 AZURE_TENANT_ID=os.environ.get('AZURE_TENANT_ID')
 AZURE_CLIENT_ID=os.environ.get('AZURE_CLIENT_ID')
@@ -63,7 +58,7 @@ def main(name, azure, aws, google, doppler, # Service flags
          mask, verbose, command):
     """
     ENVy\n
-    Simple cli tool to run arbitrary code using environmental variables retrieved as a json object from Azure keyvault.
+    Simple cli tool to run arbitrary code using environmental variables retrieved as a json object from various secret managers.
     
     Created by: Lee Martin (https://github.com/Aechrok)
     """
@@ -75,6 +70,7 @@ def main(name, azure, aws, google, doppler, # Service flags
 
 # Azure
     if azure:
+        from envy.services.azure import Azure
         svc = Azure()
         res = svc.envy(verbose, command, name, mask, tenantID, clientID, clientSecret, keyvaultName)
         if res.get('command', None):
@@ -82,6 +78,7 @@ def main(name, azure, aws, google, doppler, # Service flags
 
 # AWS
     elif aws:
+        from envy.services.aws import AWS
         svc = AWS()
         res = svc.envy(verbose, command, name, mask, awsAccessKeyID, awsSecretAccessKey, awsRegion)
         if res.get('command', None):
@@ -89,12 +86,14 @@ def main(name, azure, aws, google, doppler, # Service flags
 
 # Google
     elif google:
+        from envy.services.google import Google
         svc = Google()
         res = svc.envy(verbose, command, name, mask, googleApplicationCredentials, googleProjectID, googleVersionID)
         if res.get('command', None):
             command_run(res['command'], res['verbose'], res['mask'])
 
     elif doppler:
+        from envy.services.doppler import Doppler
         svc = Doppler()
         res = svc.envy(verbose, command, name, mask, dopplerProject, dopplerConfig, dopplerToken)
         if res.get('command', None):
